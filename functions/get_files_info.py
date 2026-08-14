@@ -9,6 +9,16 @@ def get_files_info(working_directory:str,directory:str=".")->str:
         elif not os.path.isdir(target_dir):
             return f'Error: "{directory}" is not a directory'
         else:
-            return f'Success: "{directory}" is within the working directory'
+            files_data=[]
+            with os.scandir(target_dir) as entries:
+                for entry in entries:
+                    attributes=entry.stat()
+                    file_info={
+                        "name":entry.name,
+                        "file_size":attributes.st_size,
+                        "is_dir":entry.is_dir(),
+                    }
+                    files_data.append(file_info)
+            return files_data
     except Exception as e:
         return f'Error:{e}'
