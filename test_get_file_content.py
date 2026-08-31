@@ -1,0 +1,12 @@
+from functions.get_files_content import get_files_content
+res=get_files_content("calculator", "lorem.txt")
+result=get_files_content("calculator", "main.py")
+result1=get_files_content("calculator", "pkg/calculator.py")
+result2=get_files_content("calculator", "/bin/cat") 
+result3=get_files_content("calculator", "pkg/does_not_exist.py") 
+print(f"lorem.txt length: {len(res)}")
+print(f"lorem.txt truncated: {'truncated' in res}")
+print(result)
+print(result1)
+print(result2)
+print(result3)
