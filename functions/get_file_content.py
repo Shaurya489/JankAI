@@ -1,6 +1,6 @@
 import os
 import config
-def get_files_content(working_directory:str,file_path:str)->str:
+def get_file_content(working_directory:str,file_path:str)->str:
     try:
         working_dir_abs=os.path.abspath(working_directory)
         target_path = os.path.abspath(os.path.join(working_dir_abs, file_path))
@@ -19,10 +19,10 @@ def get_files_content(working_directory:str,file_path:str)->str:
     except Exception as e:
         return f'Error:{e}'
     
-schema_get_files_content = {
+schema_get_file_content = {
     "type": "function",
     "function": {
-        "name": "get_files_content",
+        "name": "get_file_content",
         "description": "Gets content from the specified file relative to the working directory. It reads at most MAX_CHARS from the file(10000 by default)",
         "parameters": {
             "type": "object",

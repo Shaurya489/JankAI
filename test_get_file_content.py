@@ -1,4 +1,4 @@
-from functions.get_files_content import get_files_content
+from functions.get_file_content import get_files_content
 res=get_files_content("calculator", "lorem.txt")
 result=get_files_content("calculator", "main.py")
 result1=get_files_content("calculator", "pkg/calculator.py")
