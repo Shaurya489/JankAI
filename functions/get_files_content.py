@@ -18,3 +18,20 @@ def get_files_content(working_directory:str,file_path:str)->str:
             
     except Exception as e:
         return f'Error:{e}'
+    
+schema_get_files_content = {
+    "type": "function",
+    "function": {
+        "name": "get_files_content",
+        "description": "Gets content from the specified file relative to the working directory. It reads at most MAX_CHARS from the file(10000 by default)",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "File path to read the file from, relative to the working directory (default is the working directory itself)",
+                },
+            },
+        },
+    },
+}
