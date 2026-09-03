@@ -8,3 +8,11 @@ dependencies = [
     "openai==2.44.0",
     "python-dotenv==1.1.0",
 ]
+
+[project.scripts]
+jankai = "main:cli_entry"
+
+[tool.setuptools]
+packages = ["functions"]
+
+py-modules = ["main", "call_function", "config", "prompts"]
