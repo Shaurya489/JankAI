@@ -15,13 +15,18 @@ import argparse
 
 parser=argparse.ArgumentParser(description="Chatbot")
 parser.add_argument("user_prompt",type=str,help="User prompt")
+parser.add_argument("--dir",type=str,default=".",help="Target working directory")
 parser.add_argument("--verbose",action="store_true",help="Enable Verbose Output")
 args=parser.parse_args()
+
+target_dir=os.path.abspath(args.dir)
 
 client=OpenAI(
     base_url="https://openrouter.ai/api/v1",
     api_key=api_key
 )
+
+system_prompt=system_prompt+f"Your current working directory is {target_dir}"
 
 messages=[
     {"role": "system", "content": system_prompt},
@@ -45,7 +50,7 @@ for _ in range(20):
         break
     
     for tool_call in message.tool_calls:
-        result_message=call_function(tool_call,args.verbose)
+        result_message=call_function(tool_call,args.verbose,target_dir)
         if not result_message["content"]:
             raise Exception("Function call returned empty content")
 

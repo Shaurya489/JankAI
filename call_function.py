@@ -19,7 +19,7 @@ available_functions = [
     schema_write_file
 ]
 
-def call_function(tool_call, verbose: bool = False) -> dict:
+def call_function(tool_call, verbose: bool = False, working_directory:str=".") -> dict:
     function_name = tool_call.function.name
     function_args = json.loads(tool_call.function.arguments or "{}")
     if(verbose):
@@ -33,7 +33,7 @@ def call_function(tool_call, verbose: bool = False) -> dict:
             "content": f"Error: Unknown function: {function_name}",
         }
     else:
-        function_args["working_directory"]="./calculator"
+        function_args["working_directory"]=working_directory
         result=function_map[function_name](**function_args)
         return {
             "role": "tool",
