@@ -28,29 +28,30 @@ messages=[
     {"role":"user","content":args.user_prompt}
 ]
 
-response=client.chat.completions.create(
-    model="openrouter/free",
-    messages=messages,
-    tools=available_functions
-)
+for _ in range(20):
+    response=client.chat.completions.create(
+        model="openrouter/free",
+        messages=messages,
+        tools=available_functions
+    )
 
-if(args.verbose):
-    print(f"User prompt: {messages[0]['content']}")
-    if(response.usage==None):
-        raise RuntimeError("Request Failed")
-    else:
-        print(f"Prompt tokens: {response.usage.prompt_tokens}")
-        print(f"Response tokens: {response.usage.completion_tokens}")
 
-message = response.choices[0].message
+    message = response.choices[0].message
+    messages.append(message)
+    
+    if not message.tool_calls:
+        print("Response:")
+        print(message.content)
+        break
+    
+    for tool_call in message.tool_calls:
+        result_message=call_function(tool_call,args.verbose)
+        if not result_message["content"]:
+            raise Exception("Function call returned empty content")
 
-for tool_call in message.tool_calls:
-    result_message=call_function(tool_call,args.verbose)
-    if not result_message["content"]:
-        raise Exception("Function call returned empty content")
-
-    if args.verbose:
-        print(f"-> {result_message['content']}")
-
-print("Response:")
-print(message.content)
+        if args.verbose:
+            print(f"-> {result_message['content']}")
+        
+        messages.append(result_message)
+else:
+    print("Maximum iterations reached")

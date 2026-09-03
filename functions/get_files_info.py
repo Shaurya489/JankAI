@@ -19,7 +19,10 @@ def get_files_info(working_directory:str,directory:str=".")->str:
                         "is_dir":entry.is_dir(),
                     }
                     files_data.append(file_info)
-            return files_data
+            return "\n".join(
+                f"Name: {item['name']}, Size: {item['file_size']} bytes, Is directory: {item['is_dir']}"
+                for item in files_data
+            )
     except Exception as e:
         return f'Error:{e}'
     
