@@ -1,13 +1,38 @@
 import os
 import json
+from pathlib import Path
+import getpass
 from dotenv import load_dotenv
 from prompts import system_prompt
 from call_function import available_functions,call_function
 
+def get_api_key():
+    api_key=os.environ.get("OPENROUTER_API_KEY")
+    if api_key:
+        return api_key
+    
+    config_path = Path.home() / ".jankai_key"
+    if config_path.exists():
+        key = config_path.read_text().strip()
+        if key:
+            return key
+        
+    print("\n[JankAI Setup] OpenRouter API key not found.")
+    print("Get a free key at: https://openrouter.ai/keys\n")
+    
+    api_key = getpass.getpass("Enter your OpenRouter API key: ").strip()
+    
+    if not api_key:
+        raise RuntimeError("Error: An OpenRouter API key is required to use JankAI.")
+
+    config_path.write_text(api_key)
+    print(f"API key saved successfully to {config_path}\n")
+    
+    return api_key
 
 def cli_entry():
     load_dotenv()
-    api_key=os.environ.get("OPENROUTER_API_KEY")
+    api_key = get_api_key()
 
     if(api_key==None):
         raise RuntimeError("API Key not found")
