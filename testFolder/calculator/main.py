@@ -1,6 +1,6 @@
 import sys
-from pkg.calculator import Calculator
-from pkg.render import format_json_output
+from testFolder.calculator.pkg.calculator import Calculator
+from testFolder.calculator.pkg.render import format_json_output
 
 def main() -> None:
     calculator=Calculator()
